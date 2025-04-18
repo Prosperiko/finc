@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About - FinCom</title>
+  <link rel="stylesheet" href="../static/css/about.css" />
+  <link rel="icon" type="image/webp" href="../static/img/fincom_logo.png" />
+
+</head>
+<body>
+  <!-- Background Slideshow -->
+  <div class="background-slideshow"></div>
+
+  <!-- Color Switcher -->
+  <div class="color-switcher">
+    <button class="red" onclick="changeColor('#ff4c4c')"></button>
+    <button class="blue" onclick="changeColor('#4c9aff')"></button>
+    <button class="green" onclick="changeColor('#4caf50')"></button>
+    <button class="yellow" onclick="changeColor('#ffcc00')"></button>
+  </div>
+
+  <!-- Header Section -->
+  <header>
+    <h1>FinCom</h1>
+    <p>Your trusted partner in achieving financial wellness</p>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <h2>About FinCom</h2>
+    <p>
+      FinCom is dedicated to empowering individuals to take control of their financial lives.
+      We provide innovative tools that help you track daily expenses, identify wasteful spending,
+      and make informed decisions for a balanced financial future.
+    </p>
+    <p>
+      Our platform is designed to simplify expense tracking so you can focus on what matters most—
+      building a secure and sustainable financial lifestyle.
+    </p>
+
+    <section class="mission-section">
+      <h2>Our Mission</h2>
+      <p>
+        Our mission is to foster financial literacy and accountability. We strive to offer an intuitive
+        and user-friendly platform that supports you in understanding your spending habits and managing your budget effectively.
+      </p>
+    </section>
+
+    <section class="founders-section">
+      <h2>Meet Our Prestigious Founders</h2>
+    
+      <div class="founder feature-item">
+        <img src="../static/img/IMG-20250417-WA0054.jpg" alt="Luka Bright - Founder 1" />
+        <div class="profile">
+          <h3>Luka Bright</h3>
+          <p>Web Developer</p>
+        </div>
+      </div>
+    
+      <div class="founder feature-item">
+        <img src="../static/img/IMG-20250416-WA0084.jpg" alt="Olatundun Tesleem - Founder 2" />
+        <div class="profile">
+          <h3>Olatundun Tesleem.M</h3>
+          <p>Full Stack Developer/Moderator</p>
+        </div>
+      </div>
+    
+      <div class="founder feature-item">
+        <img src="../static/img/IMG-20250415-WA0243.jpg" alt="Olaofe Opeyemi.E - Founder 3" />
+        <div class="profile">
+          <h3>Olaofe Opeyemi.E</h3>
+          <p>Full Stack Developer/ML</p>
+        </div>
+      </div>
+    
+      <div class="founder feature-item">
+        <img src="../static/img/IMG-20241012-WA0013.jpg" alt="Ossaiku Prosper - Founder 4" />
+        <div class="profile">
+          <h3>Ossaiku Prosper.C</h3>
+          <p>Full Stack Developer/Team-Lead</p>
+        </div>
+      </div>
+    
+      <div class="founder feature-item">
+        <img src="../static/img/IMG-20250417-WA0132.jpg" alt="Shittu Bilal - Founder 5" />
+        <div class="profile">
+          <h3>Shittu Bilal</h3>
+          <p>Revenue Optimal Analyst</p>
+        </div>
+      </div>
+      <div class="founder feature-item">
+        <img src="../static/img/IMG-20250417-WA0131.jpg" alt="Oseni Abdulateef - Founder 6" />
+        <div class="profile">
+          <h3>Oseni Abdulateef</h3>
+          <p>Web Developer</p>
+        </div>
+      </div>
+    </section>
+    
+
+  <!-- Footer -->
+  <footer>
+    <button onclick="history.back()">Back</button>
+    <section class="about-section">
+    </section>
+  </footer>
+
+  <!-- Feature Animation Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const featureItems = document.querySelectorAll(".feature-item");
+      let currentIndex = 0;
+
+      function showFeature() {
+        featureItems.forEach((item, index) => {
+          item.classList.remove("active");
+          if (index === currentIndex) {
+            item.classList.add("active");
+          }
+        });
+
+        currentIndex = (currentIndex + 1) % featureItems.length;
+      }
+
+      showFeature(); // show first immediately
+      setInterval(showFeature, 2000); // cycle every 2s
+    });
+  </script>
+</body>
+</html>

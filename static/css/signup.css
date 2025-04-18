@@ -1,0 +1,373 @@
+:root {
+    --color-navy: navy;
+    --color-gold: #FFD700;
+    --color-light-grey: #F5F5F5;
+    --color-deep-blue: navy;
+    --color-white: #fff;
+    --color-medium-grey: navy;
+    --highlight-gold: #f4b400;
+    --shadow-color: navy;
+
+    --background-gradient: linear-gradient(290deg, var(--color-navy), var(--color-deep-blue), var(--color-gold));
+    --color-accent: linear-gradient(to right, var(--color-navy), var(--color-gold));
+}
+.faq-section {
+    padding: 15px 0; /* Further reduced padding */
+    background-color: var(--color-navy);
+    color: var(--color-navy);
+    max-width: 400px; /* Set a maximum width */
+    margin: 0 auto; /* Center the section horizontally */
+}
+
+.faq-section h2 {
+    text-align: center;
+    margin-bottom: 10px; /* Further reduced margin */
+    font-size: 1rem; /* Further reduced font size */
+    color: var(--color-gold);
+}
+
+.faq-item {
+    border: 1px solid var(--color-medium-grey);
+    border-radius: 4px; /* Slightly smaller border radius */
+    margin-bottom: 6px; /* Further reduced margin */
+    overflow: hidden;
+    background-color: var(--color-white);
+    box-shadow: 0 1px 2px var(--shadow-color); /* Further reduced shadow */
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px; /* Further reduced padding */
+    cursor: pointer;
+    background-color: var(--color-gold);
+    font-size: 0.8rem; /* Further reduced font size */
+    color: var(--color-navy);
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: var(--highlight-gold);
+    color: var(--color-white);
+}
+
+.faq-answer {
+    display: none;
+    padding: 6px 10px; /* Further reduced padding */
+    font-size: 0.7rem; /* Further reduced font size */
+    color: var(--color-medium-grey);
+    background-color: var(--color-light-grey);
+}
+
+.toggle-icon {
+    font-size: 0.8rem; /* Further reduced icon size */
+    color: var(--color-navy);
+    transition: transform 0.3s ease;
+}
+
+.faq-question.active .toggle-icon {
+    transform: rotate(45deg);
+    color: var(--color-white);
+}
+/* Feature Animation Styles */
+.feature-box {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 50px auto;
+    background-color: var(--color-navy);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.feature-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-gold);
+    color: var(--color-navy);
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: featureAnimation 9s infinite;
+}
+
+.feature-item:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.feature-item:nth-child(2) {
+    animation-delay: 3s;
+}
+
+.feature-item:nth-child(3) {
+    animation-delay: 6s;
+}
+
+@keyframes featureAnimation {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    10%, 90% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.flash-message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    color: var(--color-white);
+    margin-top: 100px; /* Adjust this value based on your header height */
+}
+
+.flash-success {
+    background-color: green; /* Green */
+}
+
+.flash-error {
+    background-color: var(--color-gold); /* Red */
+}
+
+/* Header Styles */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-navy); /* Dark Blue */
+    padding: 10px 0; /* Adjusted padding */
+    z-index: 900;
+    display: flex;
+    justify-content: center;
+    border-bottom: 3px solid var(--color-gold); /* Yellow line to separate the header */
+}
+
+/* Spacer for Header */
+.header-spacer {
+    height: 60px; /* Adjust this to match the height of your header */
+}
+  
+  .flash-success {
+    background-color: green; /* Green */
+  }
+  
+  .flash-error {
+    background-color: var(--color-gold); /* Red */
+  }
+
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+    gap: 20px; /* Add spacing between elements */
+}
+
+header h1 {
+    font-size: 24px; /* Adjust font size for a compact look */
+    color: var(--highlight-gold); /* Gold */
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+}
+
+/* Logo */
+.logo img {
+    width: 120px;
+    height: auto;
+}
+
+/* Responsive Design for Header */
+@media (max-width: 600px) {
+    header {
+        padding: 8px 0; /* Adjust padding for smaller screens */
+    }
+
+    header h1 {
+        font-size: 18px; /* Reduce font size */
+    }
+}
+
+/* Logo */
+.logo img {
+    width: 120px;
+    height: auto;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-medium-grey);
+    color: var(--color-white);
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ================= Signup Form ================= */
+.signup-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto; /* Reduced margin to decrease vertical spacing */
+    padding: 15px; /* Reduced padding to make the container more compact */
+    background: rgb(1, 37, 94);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 15px rgba(254, 247, 35, 0.863);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Ensure child elements stretch to fill the container */
+    gap: 10px; /* Reduced gap to minimize spacing between elements */
+}
+
+.signup-container h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: var(--highlight-gold);
+    text-align: center;
+}
+
+/* Input Fields */
+.input-box {
+    position: relative;
+    margin: 12px 0;
+    width: 100%; /* Ensure it takes full width of the container */
+}
+
+.input-box input,
+.input-box select {
+    width: 100%; /* Full width of the input box */
+    padding: 12px 40px; /* Add padding for the icon */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-white);
+    box-sizing: border-box; /* Include padding and border in width */
+}
+.input-box select option {
+    color: var(--color-navy);
+  }
+.input-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Icons */
+.input-box i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+    animation: shake 1.5s infinite; /* Add shaking animation */
+}
+
+/* Signup Button */
+.signup-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--highlight-gold);
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    color: var(--color-medium-grey);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.signup-btn:hover {
+    background: var(--color-gold);
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    text-align: left;
+    font-size: 14px;
+    margin-top: -10px;
+}
+
+/* ================= Customer Type Selection ================= */
+.customer-type {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.customer-type input {
+    display: none;
+}
+
+.customer-type label {
+    flex: 1; /* Make labels fill available space equally */
+    text-align: center;
+    background: var(--color-deep-blue);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.customer-type input:checked + label {
+    background: var(--highlight-gold);
+    color: var(--color-medium-grey);
+}
+
+/* ================= Responsive Design ================= */
+@media (max-width: 600px) {
+    .signup-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .signup-btn {
+        font-size: 16px;
+    }
+
+    .customer-type {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+/* Shaking Animation */
+@keyframes shake {
+    0%, 100% {
+        transform: translateY(-50%) translateX(0);
+    }
+    25% {
+        transform: translateY(-50%) translateX(-2px);
+    }
+    50% {
+        transform: translateY(-50%) translateX(2px);
+    }
+    75% {
+        transform: translateY(-50%) translateX(-2px);
+    }
+}
+@media (max-width: 600px) {
+    header {
+        padding: 8px 0; /* Adjust padding for smaller screens */
+    }
+
+    header h1 {
+        font-size: 18px; /* Reduce font size */
+    }
+}

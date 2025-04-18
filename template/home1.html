@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial-Overview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home1.css') }}">
+    <link rel="icon" type="image/webp" href="{{ url_for('static', filename='img/fincom_logo.png') }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash-message flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}  
+    {% endwith %}
+</header>
+<body>
+    <!-- Sidebar Toggle Icon -->
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> <!-- Font Awesome icon for sidebar -->
+    </div>
+
+    <!-- Chat Toggle Icon -->
+    <div class="chat-toggle" onclick="toggleChat()">
+        <i class="fas fa-comments"></i> <!-- Font Awesome icon for chat -->
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='img/Group of 7 Objects (1).png') }}" alt="Logo" class="logo">
+            <h2>Fincom</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="/expenses" onclick="changeBackground('img/bank.jpg')">Add Expense</a></li>
+            <li><a href="/income" onclick="changeBackground('img/graph1.jpg')">Add Income</a></li>
+            <li><a href="/Analysis" onclick="changeBackground('img/analysis-bg.jpg')">Analysis</a></li>
+            <li><a href="/Business_advice" onclick="changeBackground('img/business-bg.jpg')">Start a New Business</a></li>
+            
+            
+            <li><a href="/budget" onclick="changeBackground('img/community-bg.jpg')">Create a Budget</a></li>
+            <li><a href="/chatbox" onclick="changeBackground('img/chatbot-bg.jpg')">Chat-Session </a></li>
+            <li><a href="/community" onclick="changeBackground('img/community-bg.jpg')">Business-Blog</a></li>
+            
+        </ul>
+    </div>
+
+    <!-- Flash Messages -->
+}
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Financial-Overview</h1>
+        <h2>{{ message }}</h2> <!-- Welcome message -->
+
+        <!-- Financial Summary Section -->
+        <div class="financial-summary">
+            <div>
+                <h3>Profit</h3>
+                <p>${{ profit }}</p>
+            </div>
+            <div>
+                <h3>Cash Balance</h3>
+                <p>${{ cash_balance }}</p>
+            </div>
+            <div>
+                <h3>Card Balance</h3>
+                <p>${{ card_balance }}</p>
+            </div>
+        </div>
+
+        <!-- Recent Transactions Section -->
+        <div class="recent-transactions">
+            <h3>Recent Transactions</h3>
+            <a href="/all_transactions" class="show-more-btn">Transaction History</a> <!-- Show More Button -->
+            <ul>
+                {% for transaction in recent_transactions %}
+                <li>
+                    <span>{{ transaction['type'] }} - {{ transaction['category'] }}</span>
+                    <span class="amount">${{ transaction['amount'] }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div id="chat" class="chatbot-container" style="display: none;">
+        <div class="chatbot-header">FINBOT-AI</div>
+        <p>Welcome! I'm here to help you with your finance-related questions. How can I assist you today?</p>
+        <div id="messages" class="chatbot-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="user_input" placeholder="Type your message here..." aria-label="User  input" />
+            <button id="send">Send</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-media">
+            <p>Contact Us:</p>
+            <a href="https://facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/in/muhammed-tesleem-olatundun-551350335/?trk=opento_sprofile_goalscard" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function changeBackground(image) {
+            document.body.style.backgroundImage = `url({{ url_for('static', filename='${image}') }})`;
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active'); // Toggle the active class
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chat');
+            chat.style.display = chat.style.display === 'none' ? 'block' : 'none'; // Toggle chat visibility
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sendButton = document.getElementById('send');
+            const userInputField = document.getElementById('user_input');
+            const messagesContainer = document.getElementById('messages');
+    
+            sendButton.addEventListener('click', async function () {
+                const userInput = userInputField.value.trim();
+                if (!userInput) return; // Prevent empty messages
+    
+                // Append user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user-message';
+                userMessage.textContent = userInput;
+                messagesContainer.appendChild(userMessage);
+                userInputField.value = ''; // Clear input field
+    
+                // Show loading indicator
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.className = 'loading';
+                loadingIndicator.textContent = 'Finbot is typing...';
+                messagesContainer.appendChild(loadingIndicator);
+    
+                try {
+                    // Send user input to the server
+                    const response = await fetch('/generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_input: userInput })
+                    });
+    
+                    const data = await response.json();
+                    loadingIndicator.remove();
+    
+                    // Append bot response
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'message bot-message';
+                    botMessage.textContent = data.response;
+                    messagesContainer.appendChild(botMessage);
+    
+                    // Auto-scroll to the bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                } catch (error) {
+                    loadingIndicator.remove();
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'message bot-message';
+                    errorMessage.textContent = 'Sorry, something went wrong. Please try again later.';
+                    messagesContainer.appendChild(errorMessage);
+                }
+            });
+    
+            // Allow pressing Enter to send the message
+            userInputField.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+        });
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active'); // Toggle the active class
+        }
+        
+        function toggleChat() {
+            const chat = document.getElementById('chat');
+            chat.style.display = chat.style.display === 'none' ? 'block' : 'none'; // Toggle chat visibility
+        }
+    </script>
+
+</body>
+</html>

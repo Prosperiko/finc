@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Advisor</title>
+    <link rel="stylesheet" href="../static/css/result.css">
+    <link rel="icon" type="image/webp" href="../static/img/fincom_logo.png">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='img/fincom_logo.png') }}" alt="Logo" class="logo">
+            <h2>Fincom</h2>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="/home1" onclick="changeBackground('img/cash.jpg')">Home</a></li>
+            <li><a href="/expenses" onclick="changeBackground('img/bank.jpg')">Add Expense</a></li>
+            <li><a href="/income" onclick="changeBackground('img/graph1.jpg')">Add Income</a></li>
+            <li><a href="/Analysis" onclick="changeBackground('img/analysis-bg.jpg')">Analysis</a></li>
+            <li><a href="/chatbox" onclick="changeBackground('img/chatbot-bg.jpg')">Chat-Session</a></li>
+            <li><a href="/community" onclick="changeBackground('img/community-bg.jpg')">Business-Blog</a></li>
+            <li><a href="/budget" onclick="changeBackground('img/community-bg.jpg')">Create-Budget</a></li>
+            
+        </ul>
+   
+    </div>
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> <!-- Font Awesome icon for sidebar -->
+    </div>
+
+
+
+    <div class="container">
+        <h1>Business Advisor</h1>
+        <p>Enter your available capital, and we will suggest a suitable business.</p>
+
+        <form action="/Business_advice" method="post"> <!-- Change action to the correct route -->
+            <input type="number" name="capital" placeholder="Enter your capital ($)" required>
+            <button type="submit">Find Business</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+    <script>
+        document.getElementById('transaction-form').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const userInput = document.getElementById('user-input').value;
+      
+          fetch('/chatbot_transaction', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                  'user_input': userInput
+              })
+          })
+          .then(response => response.json())
+          .then(data => {
+              const responseDiv = document.getElementById('response');
+              responseDiv.style.display = 'block'; // Show the response box
+              if (data.success) {
+                  responseDiv.className = 'success'; // Apply success styling
+                  responseDiv.innerText = data.success;
+              } else {
+                  responseDiv.className = 'error'; // Apply error styling
+                  responseDiv.innerText = data.error;
+              }
+              document.getElementById('user-input').value = ''; // Clear input
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              const responseDiv = document.getElementById('response');
+              responseDiv.style.display = 'block';
+              responseDiv.className = 'error';
+              responseDiv.innerText = 'An error occurred. Please try again.';
+          });
+      });
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay');
+    
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active'); // Toggle the active class
+            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none'; // Show or hide overlay
+        });
+    
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('active'); // Remove active class to hide sidebar
+            overlay.style.display = 'none'; // Hide overlay
+        });
+    });
+      </script>
+</body>
+</html>
+

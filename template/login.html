@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CryptoWorld</title>
+    <link rel="stylesheet" href="../static/css/login.css">
+    <link rel="icon" type="image/webp" href="../static/img/fincom_logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash-message flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}  
+  {% endwith %}
+    <!-- Background Slideshow -->
+    <div class="background-slideshow"></div>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="../static/img/fincom_logo.png" alt="Fincom Logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="about">About</a></li>
+
+                    <li><a href="contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Color Switcher -->
+    <div class="color-switcher">
+        <button class="red" onclick="changeColor('#ff4c4c')"></button>
+        <button class="blue" onclick="changeColor('#4c9aff')"></button>
+        <button class="green" onclick="changeColor('#4caf50')"></button>
+        <button class="yellow" onclick="changeColor('#ffcc00')"></button>
+    </div>
+
+    <!-- Feature Section -->
+
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <h2>Welcome back</h2>
+        <p>Sign in to your account</p>
+        <form action="/login" method="POST">
+            <div class="input-box">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" name="username" placeholder="Username" required>
+            </div>
+            <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p>Forgot password? <a href="{{ url_for('forgot_password') }}"style="display: inline-block; padding: 10px 16px; color: var(--color-gold); background-color: var(--color-navy);   text-decoration: none; font-size: 14px;">Forgot Password</a></p>
+
+        <p>Don't have an account? <a href="{{ url_for('signup') }}" class="btn">Sign Up</a></p>
+    </div>
+    <section class="app-features scatter-animation" id="app-features">
+        <div class="container">
+            <h2>Explore Our App Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Track your financial data with real-time analytics and insights.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-wallet"></i>
+                    <h3>Expense Tracking</h3>
+                    <p>Monitor your expenses and stay on top of your budget effortlessly.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-lock"></i>
+                    <h3>Secure Data</h3>
+                    <p>Your financial data is encrypted and stored securely.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-bell"></i>
+                    <h3>Custom Alerts</h3>
+                    <p>Set up alerts to stay informed about your financial activities.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access your financial data anytime, anywhere on your mobile device.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash-message flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}  
+  {% endwith %}
+
+    <script>
+ // Show the first feature immediately
+ document.addEventListener("DOMContentLoaded", () => {
+    const featureItems = document.querySelectorAll(".feature-item");
+    let currentIndex = 0;
+
+    function showFeature() {
+        // Hide all features
+        featureItems.forEach((item) => {
+            item.style.opacity = "0";
+            item.style.transform = "scale(0.8) translateY(50px)";
+        });
+
+        // Show the current feature
+        const currentFeature = featureItems[currentIndex];
+        currentFeature.style.opacity = "1";
+        currentFeature.style.transform = "scale(1) translateY(0)";
+
+        // Move to the next feature
+        currentIndex = (currentIndex + 1) % featureItems.length; // Loop back to the first feature
+    }
+
+    // Start the animation loop
+    setInterval(showFeature, 2000); // Change feature every 2 seconds
+});
+
+
+    </script>
+</body>
+</html>

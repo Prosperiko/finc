@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative AI Chatbot</title>
+    <link rel="stylesheet" href="../static/css/chatbot.css">
+    <link rel="icon" type="image/webp" href="../static/img/fincom_logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <div id="chat">
+        <h1>TALK TO FINCOM AI</h1>
+        <p>Welcome! I'm here to help you with your finance-related questions. How can I assist you today?</p>
+        <div id="messages"></div>
+        <div style="display: flex; justify-content: space-between;">
+            <input type="text" id="user_input" placeholder="Type your message here..." aria-label="User input" />
+            <button id="send">Send</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sendButton = document.getElementById('send');
+            const userInputField = document.getElementById('user_input');
+            const messagesContainer = document.getElementById('messages');
+        
+            sendButton.addEventListener('click', async function () {
+                const userInput = userInputField.value.trim();
+                if (!userInput) return;
+            
+                // Append user message
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user';
+                userMessage.textContent = userInput;
+                messagesContainer.appendChild(userMessage);
+                userInputField.value = '';
+            
+                // Show loading indicator
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.className = 'loading';
+                loadingIndicator.id = 'loading';
+                loadingIndicator.textContent = 'Finbot is typing...';
+                messagesContainer.appendChild(loadingIndicator);
+            
+                try {
+                    // Send user input to the server
+                    console.log('Sending request to /generate:', userInput); // Debugging log
+                    const response = await fetch('/generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_input: userInput })
+                    });
+            
+                    const data = await response.json();
+                    console.log('Response from /generate:', data); // Debugging log
+            
+                    // Remove loading indicator
+                    loadingIndicator.remove();
+            
+                    // Append bot response
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'message bot';
+                    botMessage.textContent = data.response || 'No response received.';
+                    messagesContainer.appendChild(botMessage);
+            
+                    // Auto-scroll to the bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                } catch (error) {
+                    console.error('Error in fetch:', error); // Debugging log
+                    loadingIndicator.remove();
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'message bot';
+                    errorMessage.textContent = 'Sorry, something went wrong. Please try again later.';
+                    messagesContainer.appendChild(errorMessage);
+                }
+            });
+        
+            // Allow pressing Enter to send the message
+            userInputField.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Your Budget</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/budget.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='img/Group of 7 Objects (1).png') }}" alt="Logo" class="logo">
+            <h2>Fincom</h2>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="/home1" onclick="changeBackground('img/bank.jpg')">Home</a></li>
+            <li><a href="/expenses" onclick="changeBackground('img/graph1.jpg')">Add Expense</a></li>
+            <li><a href="/income" onclick="changeBackground('img/graph1.jpg')">Add Income</a></li>
+            <li><a href="/ana" onclick="changeBackground('img/analysis-bg.jpg')">Analysis</a></li>
+            <li><a href="/Business_advice" onclick="changeBackground('img/business-bg.jpg')">Start a New Business</a></li>
+            <li><a href="/chatbox" onclick="changeBackground('img/chatbot-bg.jpg')">Chat-Session</a></li>
+            <li><a href="/community" onclick="changeBackground('img/community-bg.jpg')">Business-Blog</a></li>
+
+        </ul>
+      </div>
+      <div class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> <!-- Font Awesome icon for sidebar -->
+    </div>
+    
+    <h1><i class="fas fa-coins"></i> Set Your Budget</h1>
+
+<form action="{{ url_for('budget') }}" method="POST" id="budget-form">
+    <label for="category"><i class="fas fa-folder-open"></i> Budget Category:</label>
+    <input type="text" id="category" name="category" placeholder="e.g. Groceries" required>
+
+    <label for="amount"><i class="fas fa-money-bill-wave"></i> Budget Amount:</label>
+    <input type="number" id="amount" name="amount" placeholder="e.g. 10000" required>
+
+    <button type="submit"><i class="fas fa-check-circle"></i> Set Budget</button>
+</form>
+
+<h2><i class="fas fa-chart-pie"></i> Your Budgets</h2>
+<div class="budget-list">
+    {% for budget in budgets %}
+        <div class="budget-item">
+            <p><i class="fas fa-folder"></i> Category: {{ budget[2] }}</p>
+            <p><i class="fas fa-naira-sign"></i> Amount: ₦{{ budget[3] }}</p>
+            <p><i class="fas fa-calendar-alt"></i> Set on: {{ budget[4] }}</p>
+            <form action="{{ url_for('update_budget', budget_id=budget[0]) }}" method="POST" class="budget-update-form">
+                <label for="update-amount-{{ budget[0] }}"><i class="fas fa-edit"></i> Amount to Add/Reduce:</label>
+                <input type="number" id="update-amount-{{ budget[0] }}" name="update_amount" required>
+                <button type="submit"><i class="fas fa-sync-alt"></i> Update Budget</button>
+            </form>
+        </div>
+    {% else %}
+        <p><i class="fas fa-exclamation-circle"></i> No budgets found.</p>
+    {% endfor %}
+</div>
+
+    <script>
+        document.querySelectorAll('.budget-update-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                const updateAmount = parseFloat(this.querySelector('input[name="update_amount"]').value);
+                if (isNaN(updateAmount) || updateAmount <= 0) {
+                    event.preventDefault(); // Prevent form submission if the amount is invalid
+                    alert("Please enter a valid amount to add or reduce.");
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+        
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active'); // Toggle the active class
+                overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none'; // Show or hide overlay
+            });
+        
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active'); // Remove active class to hide sidebar
+                overlay.style.display = 'none'; // Hide overlay
+            });
+        });
+    </script>
+</body>
+</html>

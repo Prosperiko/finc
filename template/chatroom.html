@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> Live-Chat Room</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatroom.css') }}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <img src="{{ url_for('static', filename='img/fincom_logo.png') }}" alt="Logo" class="logo">
+        <h2>Fincom</h2>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li><a href="/home1" onclick="changeBackground('img/bank.jpg')">Home</a></li>
+        <li><a href="/income" onclick="changeBackground('img/graph1.jpg')">Add Income</a></li>
+        <li><a href="/Analysis" onclick="changeBackground('img/analysis-bg.jpg')">Analysis</a></li>
+        <li><a href="/Business_advice" onclick="changeBackground('img/business-bg.jpg')">Start a New Business</a></li>
+        <li><a href="/community" onclick="changeBackground('img/community-bg.jpg')">Business-Blog</a></li>
+        <li><a href="/chatbox" onclick="changeBackground('img/chatbot-bg.jpg')">Chat-Session</a></li>
+        <li><a href="/budget" onclick="changeBackground('img/community-bg.jpg')">Create-Budget</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i> <!-- Font Awesome icon for sidebar -->
+  </div>
+
+    <!-- Main Chat Area -->
+    <div class="main-content">
+      <h1><i class="fas fa-comments"></i> Chat Room for {{ username }}</h1>
+
+      <div id="messages"></div>
+
+      <div class="chat-input-area">
+        <input id="message_input" type="text" placeholder="Type your message here...">
+        <button id="send_button"><i class="fas fa-paper-plane"></i> Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+
+    $('#send_button').click(function () {
+      const message = $('#message_input').val();
+      const username = "{{ username }}";
+      if (message.trim() !== "") {
+        socket.emit('send_message', { message: message, sender: username });
+        $('#message_input').val('');
+      }
+    });
+
+    socket.on('receive_message', function (data) {
+      const messageClass = data.sender === "{{ username }}" ? 'sender' : 'receiver';
+      $('#messages').append('<div class="message ' + messageClass + '">' + data.message + '</div>');
+      $('#messages').scrollTop($('#messages')[0].scrollHeight);
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+      const sidebarToggle = document.querySelector('.sidebar-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+  
+      sidebarToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('active'); // Toggle the active class
+          overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none'; // Show or hide overlay
+      });
+  
+      overlay.addEventListener('click', function() {
+          sidebar.classList.remove('active'); // Remove active class to hide sidebar
+          overlay.style.display = 'none'; // Hide overlay
+      });
+  });
+  </script>
+</body>
+</html>
